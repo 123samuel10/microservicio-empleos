@@ -13,6 +13,11 @@ from sqlalchemy.sql import func
 from app.database import Base
 
 
+class TipoOferta(str, enum.Enum):
+    empleo = "empleo"
+    practica = "practica"
+
+
 class EstadoVacante(str, enum.Enum):
     borrador = "borrador"
     publicada = "publicada"
@@ -51,7 +56,19 @@ class Vacante(Base):
     )
     titulo: Mapped[str] = mapped_column(String(200), nullable=False)
     descripcion: Mapped[str] = mapped_column(Text, nullable=False)
+    # Tipo de oferta: empleo o práctica. Por defecto "empleo".
+    tipo_oferta: Mapped[TipoOferta] = mapped_column(
+        Enum(TipoOferta, name="tipo_oferta_enum"),
+        default=TipoOferta.empleo,
+        server_default="empleo",
+        nullable=False,
+        index=True,
+    )
     area_conocimiento: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    # Habilidades/skills requeridas. Lista de strings; por defecto vacía ('{}').
+    habilidades: Mapped[List[str]] = mapped_column(
+        ARRAY(String), nullable=False, server_default="{}"
+    )
     nivel_formacion: Mapped[NivelFormacion] = mapped_column(
         Enum(NivelFormacion, name="nivel_formacion_enum"), nullable=False
     )

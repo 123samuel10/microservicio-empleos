@@ -101,7 +101,9 @@ class VacanteService:
             empresa_id=empresa_id,
             titulo=datos.titulo,
             descripcion=datos.descripcion,
+            tipo_oferta=datos.tipo_oferta,
             area_conocimiento=datos.area_conocimiento,
+            habilidades=datos.habilidades,
             nivel_formacion=datos.nivel_formacion,
             modalidad=datos.modalidad,
             disponibilidad_horaria=datos.disponibilidad_horaria,
@@ -149,6 +151,7 @@ class VacanteService:
         offset = (filtros.page - 1) * filtros.page_size
         vacantes = await self.vacante_repo.listar(
             estado=EstadoVacante.publicada,
+            tipo_oferta=filtros.tipo_oferta,
             area_conocimiento=filtros.area_conocimiento,
             nivel_formacion=filtros.nivel_formacion,
             modalidad=filtros.modalidad,

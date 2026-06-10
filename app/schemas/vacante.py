@@ -6,7 +6,7 @@ from typing import Optional, List
 
 from pydantic import BaseModel, Field, model_validator
 
-from app.models.vacante import EstadoVacante, Modalidad, NivelFormacion, DisponibilidadHoraria
+from app.models.vacante import EstadoVacante, Modalidad, NivelFormacion, DisponibilidadHoraria, TipoOferta
 
 
 # --- Requisitos ---
@@ -40,7 +40,9 @@ class DocumentoVacanteResponse(BaseModel):
 class VacanteCreate(BaseModel):
     titulo: str = Field(min_length=3, max_length=200)
     descripcion: str = Field(min_length=10)
+    tipo_oferta: TipoOferta = TipoOferta.empleo
     area_conocimiento: str = Field(max_length=100)
+    habilidades: List[str] = []
     nivel_formacion: NivelFormacion
     modalidad: Modalidad
     disponibilidad_horaria: DisponibilidadHoraria
@@ -61,7 +63,9 @@ class VacanteCreate(BaseModel):
 class VacanteUpdate(BaseModel):
     titulo: Optional[str] = Field(None, min_length=3, max_length=200)
     descripcion: Optional[str] = Field(None, min_length=10)
+    tipo_oferta: Optional[TipoOferta] = None
     area_conocimiento: Optional[str] = Field(None, max_length=100)
+    habilidades: Optional[List[str]] = None
     nivel_formacion: Optional[NivelFormacion] = None
     modalidad: Optional[Modalidad] = None
     disponibilidad_horaria: Optional[DisponibilidadHoraria] = None
@@ -77,7 +81,9 @@ class VacanteResponse(BaseModel):
     empresa_id: uuid.UUID
     titulo: str
     descripcion: str
+    tipo_oferta: TipoOferta
     area_conocimiento: str
+    habilidades: List[str] = []
     nivel_formacion: NivelFormacion
     modalidad: Modalidad
     disponibilidad_horaria: DisponibilidadHoraria
@@ -100,7 +106,9 @@ class VacanteResumenResponse(BaseModel):
     id: uuid.UUID
     empresa_id: uuid.UUID
     titulo: str
+    tipo_oferta: TipoOferta
     area_conocimiento: str
+    habilidades: List[str] = []
     nivel_formacion: NivelFormacion
     modalidad: Modalidad
     disponibilidad_horaria: DisponibilidadHoraria
@@ -117,6 +125,7 @@ class VacanteResumenResponse(BaseModel):
 # --- Filtros ---
 
 class FiltrosVacante(BaseModel):
+    tipo_oferta: Optional[TipoOferta] = None
     area_conocimiento: Optional[str] = None
     nivel_formacion: Optional[NivelFormacion] = None
     modalidad: Optional[Modalidad] = None

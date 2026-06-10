@@ -35,6 +35,7 @@ async def crear_vacante(
 
 @router.get("/", response_model=List[VacanteResumenResponse])
 async def listar_vacantes(
+    tipo_oferta: str = Query(None),
     area_conocimiento: str = Query(None),
     nivel_formacion: str = Query(None),
     modalidad: str = Query(None),
@@ -46,6 +47,7 @@ async def listar_vacantes(
     db: AsyncSession = Depends(get_db),
 ):
     filtros = FiltrosVacante(
+        tipo_oferta=tipo_oferta,
         area_conocimiento=area_conocimiento,
         nivel_formacion=nivel_formacion,
         modalidad=modalidad,

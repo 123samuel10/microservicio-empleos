@@ -16,6 +16,7 @@ from app.models.vacante import (
     NivelFormacion,
     Modalidad,
     DisponibilidadHoraria,
+    TipoOferta,
 )
 
 
@@ -37,6 +38,7 @@ class VacanteRepository:
     async def listar(
         self,
         estado: EstadoVacante = EstadoVacante.publicada,
+        tipo_oferta: Optional[TipoOferta] = None,
         area_conocimiento: Optional[str] = None,
         nivel_formacion: Optional[NivelFormacion] = None,
         modalidad: Optional[Modalidad] = None,
@@ -51,6 +53,8 @@ class VacanteRepository:
             .options(selectinload(Vacante.requisitos), selectinload(Vacante.documentos))
             .where(Vacante.estado == estado)
         )
+        if tipo_oferta:
+            query = query.where(Vacante.tipo_oferta == tipo_oferta)
         if area_conocimiento:
             query = query.where(Vacante.area_conocimiento.ilike(f"%{area_conocimiento}%"))
         if nivel_formacion:
