@@ -23,7 +23,7 @@ from app.services.vacante_service import VacanteService
 router = APIRouter(prefix="/vacantes", tags=["Vacantes"])
 
 
-@router.post("/", response_model=VacanteResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=VacanteResponse, status_code=status.HTTP_201_CREATED)
 async def crear_vacante(
     datos: VacanteCreate,
     db: AsyncSession = Depends(get_db),
@@ -33,7 +33,7 @@ async def crear_vacante(
     return await service.crear_vacante(usuario.id, datos)
 
 
-@router.get("/", response_model=List[VacanteResumenResponse])
+@router.get("", response_model=List[VacanteResumenResponse])
 async def listar_vacantes(
     tipo_oferta: str = Query(None),
     area_conocimiento: str = Query(None),
